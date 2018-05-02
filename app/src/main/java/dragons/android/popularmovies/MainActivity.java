@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
             movies = JSONUtilities.movieParsing(json);
 
-            Log.d("MAIN_ACTIVITY", movies.get(1).getOverview());
+
 
             return null;
         }
