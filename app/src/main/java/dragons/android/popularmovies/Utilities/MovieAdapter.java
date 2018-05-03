@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dragons.android.popularmovies.R;
@@ -20,19 +21,25 @@ import dragons.android.popularmovies.R;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private List<Movie> movies;
+    private List<Movie> movies = new ArrayList<>();
     private Context context;
 
 
-    //Constructor
+    //Constructor with params needed to load data into the adapter
 
     public MovieAdapter(List<Movie> movies, Context context) {
-        this.movies = movies;
-        this.context = context;
+
+            this.movies = movies;
+            this.context = context;
     }
 
 
+    public void updateAdapter(List<Movie> movies) {
 
+        this.movies.clear();
+        this.movies.addAll(movies);
+        this.notifyDataSetChanged();
+    }
 
 
 

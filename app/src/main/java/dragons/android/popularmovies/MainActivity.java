@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView test;
     private List<Movie> movies;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private MovieAdapter adapter;
     private final static int FIRST_STRING = 0;
     private final static int SPAN_COUNT = 2;
 
@@ -37,13 +37,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        movies = new ArrayList<>();
+        movies = new ArrayList<Movie>();
 
         // Setup the recycler view with the GirdLayoutManger that spans two columns.
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this,SPAN_COUNT));
-        adapter = new MovieAdapter(movies,MainActivity.this);
+        adapter = new MovieAdapter(movies,this);
+        recyclerView.setAdapter(adapter);
 
 
         // We need to do the networking outside the main thread. JSON is downloaded outside the
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
 
-            recyclerView.setAdapter(adapter);
+            adapter.updateAdapter(movies);
 
         }
 
