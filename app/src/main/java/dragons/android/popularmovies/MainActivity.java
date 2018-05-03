@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
 
-            adapter.updateAdapter(movies);
+            adapter.updateAdapter(movies, MainActivity.this);
 
         }
 

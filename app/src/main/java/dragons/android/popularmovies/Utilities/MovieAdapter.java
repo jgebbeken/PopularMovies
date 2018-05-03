@@ -33,12 +33,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             this.context = context;
     }
 
+    // This is to attempt to refresh the List of movie objects with new JSON data
 
-    public void updateAdapter(List<Movie> movies) {
+    public void updateAdapter(List<Movie> movies, Context context) {
 
         this.movies.clear();
         this.movies.addAll(movies);
-        this.notifyDataSetChanged();
+        this.context = context;
+        notifyDataSetChanged();
     }
 
 
