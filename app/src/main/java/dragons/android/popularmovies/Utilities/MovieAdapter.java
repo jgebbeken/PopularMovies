@@ -2,7 +2,6 @@ package dragons.android.popularmovies.Utilities;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +15,23 @@ import java.util.List;
 import dragons.android.popularmovies.R;
 
 /**
- * Created by jgebbeken on 4/30/2018.
+ * Purpose of this Adapter is to bind the movie objects to the view holders.
  */
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private List<Movie> movies = new ArrayList<>();
     private Context context;
+    private OnMovieClickHandler mMovieHandler;
+
+
+    public interface OnMovieClickHandler {
+        void onMovieClick (int position);
+    }
+
+    public void setOnMovieClickHandler(OnMovieClickHandler clickHandler){
+        mMovieHandler = clickHandler;
+    }
 
 
     //Constructor with params needed to load data into the adapter
@@ -37,26 +46,36 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     public void updateAdapter(List<Movie> movies, Context context) {
 
+
         this.movies.clear();
         this.movies.addAll(movies);
         this.context = context;
         notifyDataSetChanged();
+
     }
-
-
-
 
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView leftImageCol;
+        public ImageView posterImage;
         //public ImageView rightImageCol;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
 
-            leftImageCol = itemView.findViewById(R.id.left_column_poster);
+            posterImage = itemView.findViewById(R.id.large_poster);
 
+            itemView. setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mMovieHandler != null) {
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION) {
+                            mMovieHandler.onMovieClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -75,7 +94,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         Picasso.get()
                 .load(movie.getPosterUrl())
-                .into(holder.leftImageCol);
+                .into(holder.posterImage);
+
+
+
 
     }
 

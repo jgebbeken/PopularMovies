@@ -12,12 +12,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by jgebbeken on 4/29/2018.
+ * This is to provide networking that builds the URL and builds JSON data back with the
+ * response method.
  */
 
 public class NetworkUtilities{
 
-    private final static String API_KEY = "";
+
+    // PLACE YOUR API KEY HERE
+
+    private final static String API_KEY = "2f76b38ed51376a4d80942c4024942f5";
     private final static String API_PARAM = "api_key";
     private final static String BASE_URL = "https://api.themoviedb.org/3/movie/";
     private final static String REGION = "us";
@@ -55,7 +59,6 @@ public class NetworkUtilities{
                 InputStream input = connection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input));
 
-                Log.d("Stream:", "Data coming in");
                 String currentLine;
 
                 while ((currentLine = bufferedReader.readLine()) != null) {

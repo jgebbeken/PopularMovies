@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- These are default size for a Nexus 5 size screen -->
+    <dimen name="padding_top">8dp</dimen>
+    <dimen name="padding_bottom">8dp</dimen>
+    <dimen name="zero_width">0dp</dimen>
+    <dimen name="backdrop_height">256dp</dimen>
+    <dimen name="detail_poster_height">161dp</dimen>
+    <dimen name="detail_poster_width">108dp</dimen>
+</resources>

@@ -1,6 +1,6 @@
 package dragons.android.popularmovies.Utilities;
 
-import android.util.Log;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by jgebbeken on 4/28/2018.
+ * Created by jgebbeken
+ * The purpose of this JSON Utilities is to provide a way to pull from the TMDB api and put
+ * them in the movie object
  */
 
 public class JSONUtilities {
@@ -48,13 +50,12 @@ public class JSONUtilities {
                 movie.setReleaseDate(obj.optString(RELEASE_DATE));
                 movie.setBackDropUrl(obj.optString(BACKDROP));
                 movie.setPosterUrl(obj.optString(POSTER));
-                movie.setVoteAverage(obj.optInt(VOTE_AVERAGE));
+                movie.setVoteAverage(obj.optDouble(VOTE_AVERAGE));
                 movie.setVoteCount(obj.optInt(VOTE_COUNT));
 
                 movies.add(movie);
             }
 
-            Log.d("FROM INDEX 0",movies.get(1).getOverview());
 
         } catch (JSONException e) {
             e.printStackTrace();
