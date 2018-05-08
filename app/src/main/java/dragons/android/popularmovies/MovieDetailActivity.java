@@ -46,13 +46,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         double voteAverage = intent.getDoubleExtra(VOTE_AVERAGE, 0);
         float voteRating = (float) voteAverage;
 
-        ImageView ivBackground =(ImageView) findViewById(R.id.ivBackground);
-        ImageView ivPoster = (ImageView) findViewById(R.id.ivDetailViewPoster);
-        TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
-        TextView tvOverview = (TextView) findViewById(R.id.tvOverview);
-        TextView tvReleaseDate =(TextView) findViewById(R.id.tvReleaseDate);
-        TextView tvVoteCount = (TextView) findViewById(R.id.tvVoteCount);
-        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        ImageView ivBackground = findViewById(R.id.ivBackground);
+        ImageView ivPoster = findViewById(R.id.ivDetailViewPoster);
+        TextView tvTitle = findViewById(R.id.tvTitle);
+        TextView tvOverview = findViewById(R.id.tvOverview);
+        TextView tvReleaseDate = findViewById(R.id.tvReleaseDate);
+        TextView tvVoteCount = findViewById(R.id.tvVoteCount);
+        RatingBar ratingBar = findViewById(R.id.ratingBar);
 
 
         getSupportActionBar().setTitle(title);

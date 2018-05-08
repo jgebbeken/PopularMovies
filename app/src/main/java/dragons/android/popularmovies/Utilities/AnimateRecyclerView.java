@@ -13,7 +13,7 @@ import android.view.animation.GridLayoutAnimationController;
 https://gist.github.com/Musenkishi/8df1ab549857756098ba
 Credit to Freddie (Musenkishi) Lust-Hed
 
-with calculations based on google's gridview framework on how to lay down columns and rows which
+with calculations based on google's own gridview framework on how to lay down columns and rows which
 are featured in lines 562-565 of this code:
 https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/widget/GridView.java#564
 

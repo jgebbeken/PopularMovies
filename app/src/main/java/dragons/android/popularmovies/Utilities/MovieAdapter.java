@@ -93,7 +93,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Movie movie = movies.get(position);
 
         Picasso.get()
-                .load(movie.getPosterUrl())
+                .load(movie.getPosterUrl()).placeholder(R.drawable.tmdb_logo).error(R.drawable.no_image)
                 .into(holder.posterImage);
 
 

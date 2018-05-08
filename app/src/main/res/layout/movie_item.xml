@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/large_poster"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/zero_width"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:paddingTop="@dimen/padding_top"
-        android:paddingBottom="@dimen/padding_bottom"
+        android:layout_centerVertical="true"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/content_description_large_poster"
-        android:adjustViewBounds="true" />
+        android:paddingBottom="@dimen/padding_eight"
+        android:paddingTop="@dimen/padding_eight"
+        app:layout_constraintDimensionRatio="w,2:3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

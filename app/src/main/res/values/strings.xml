@@ -5,5 +5,7 @@
     <string name="Now_Playing">Now Playing</string>
     <string name="release_date">Release date</string>
 
-    <string name="content_description_large_poster">Small Poster Image</string>
+    <string name="content_description_large_poster">Large Poster Image</string>
+    <string name="content_description_small_poster">Small Poster Image</string>
+    <string name="backdrop">Backdrop of movie</string>
 </resources>

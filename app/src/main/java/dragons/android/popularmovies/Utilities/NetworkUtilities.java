@@ -52,6 +52,8 @@ public class NetworkUtilities{
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
+        connection.setConnectTimeout(5000);
+
         StringBuilder json = new StringBuilder();
 
         if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
