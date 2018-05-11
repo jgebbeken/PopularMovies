@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,21 +17,18 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import dragons.android.popularmovies.Utilities.JSONUtilities;
+import dragons.android.popularmovies.Utilities.HttpAsyncDataTask;
 import dragons.android.popularmovies.Utilities.Movie;
 import dragons.android.popularmovies.Utilities.MovieAdapter;
-import dragons.android.popularmovies.Utilities.NetworkUtilities;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler {
+
+public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler,HttpAsyncDataTask.OnTaskCompleted {
 
     private final static String INITIAL_ENDPOINT = "now_playing";
-    private URL url;
-    private String json;
+
     private TextView test;
     private List<Movie> movies;
     private RecyclerView recyclerView;
@@ -85,7 +80,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
 
             // We need to do the networking outside the main thread. JSON is downloaded outside the
             // main thread as well.
-            new ProcessMovieTask().execute(INITIAL_ENDPOINT);
+            //new ProcessMovieTask().execute(INITIAL_ENDPOINT);
+            HttpAsyncDataTask task = new HttpAsyncDataTask(MainActivity.this);
+            task.execute(INITIAL_ENDPOINT);
+
 
         }
         else {
@@ -114,7 +112,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
 
                 if(checkNetwork(this)) {
                     getSupportActionBar().setTitle(MOST_POPULAR);
-                    new ProcessMovieTask().execute(POPULAR);
+                    HttpAsyncDataTask task = new HttpAsyncDataTask(MainActivity.this);
+                    task.execute(POPULAR);
                     return true;
                 } else {
                     toastNoInternet(this);
@@ -124,7 +123,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
             case R.id.highestRated:
                 if(checkNetwork(this)) {
                     getSupportActionBar().setTitle(TOP_RATED_TITLE);
-                    new ProcessMovieTask().execute(TOP_RATED);
+                    HttpAsyncDataTask task = new HttpAsyncDataTask(MainActivity.this);
+                    task.execute(TOP_RATED);
                     return true;
                 } else
                     toastNoInternet(this);
@@ -132,7 +132,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
             case R.id.nowPlaying:
                 if(checkNetwork(this)) {
                     getSupportActionBar().setTitle(NOW_PLAYING);
-                    new ProcessMovieTask().execute(INITIAL_ENDPOINT);
+                    HttpAsyncDataTask task = new HttpAsyncDataTask(MainActivity.this);
+                    task.execute(INITIAL_ENDPOINT);
                     return true;
                 }
                 else {
@@ -166,42 +167,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
 
     }
 
-    public class ProcessMovieTask extends AsyncTask<String, Void, Void> {
+    // Uses the HttpAsyncDataTask to handle background HTTP tasks and returns list of Movie objects
+    // to give it to the adapter
+    @Override
+    public void onTaskCompleted(List<Movie> response) {
 
+        movies = response;
+        LayoutAnimationController animationController = AnimationUtils
+                .loadLayoutAnimation(MainActivity.this,R.anim.grid_translate_up);
+        recyclerView.setLayoutAnimation(animationController);
 
-        @Override
-        protected Void doInBackground(String... strings) {
-
-            url = NetworkUtilities.buildUrl(strings[FIRST_STRING]);
-            Log.d("URL: ", url.toString());
-            try {
-                json = NetworkUtilities.response(url);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            movies = JSONUtilities.movieParsing(json);
-
-
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            LayoutAnimationController animationController = AnimationUtils
-                    .loadLayoutAnimation(MainActivity.this,R.anim.grid_translate_up);
-            recyclerView.setLayoutAnimation(animationController);
-
-            adapter.updateAdapter(movies, MainActivity.this);
-
-
-        }
-
-
-
-
-
+        adapter.updateAdapter(movies, MainActivity.this);
     }
 
     // Checks the network to see if there is no internet then return a boolean back based on
@@ -222,5 +198,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
                         " for internet to connect before trying again",
                 Toast.LENGTH_SHORT).show();
     }
+
+
 
 }

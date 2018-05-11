@@ -10,11 +10,13 @@
         android:layout_width="@dimen/zero_width"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/content_description_large_poster"
         android:paddingBottom="@dimen/padding_eight"
         android:paddingTop="@dimen/padding_eight"
         app:layout_constraintDimensionRatio="w,2:3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
