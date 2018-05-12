@@ -11,6 +11,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import dragons.android.popularmovies.BuildConfig;
+
 /**
  * This is to provide networking that builds the URL and builds JSON data back with the
  * response method.
@@ -19,13 +21,11 @@ import java.net.URL;
 public class NetworkUtilities{
 
 
-    // PLACE YOUR API KEY HERE
-
-    private final static String API_KEY = "";
-    private final static String API_PARAM = "api_key";
-    private final static String BASE_URL = "https://api.themoviedb.org/3/movie/";
-    private final static String REGION = "us";
-    private final static String REGION_PARAM = "region";
+    private static final String API_KEY = BuildConfig.TheMovieDBKey;
+    private static final String API_PARAM = "api_key";
+    private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
+    private static final String REGION = "us";
+    private static final String REGION_PARAM = "region";
 
 
      public static URL buildUrl (String endpoint){
