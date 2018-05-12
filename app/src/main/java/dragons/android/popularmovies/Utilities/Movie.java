@@ -1,10 +1,14 @@
 package dragons.android.popularmovies.Utilities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
- * Created by jgebbeken on 4/29/2018.
+ * Movie object model used within this application. The Parcelable implementation is used to
+ * quickly transfer Movie objects to Activities with ease with only one Intent.putExtra.
  */
 
-public class Movie {
+public class Movie implements Parcelable {
 
     private String posterUrl;
     private String smallPosterUrl;
@@ -112,4 +116,45 @@ public class Movie {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.posterUrl);
+        dest.writeString(this.smallPosterUrl);
+        dest.writeString(this.backDropUrl);
+        dest.writeString(this.overview);
+        dest.writeString(this.releaseDate);
+        dest.writeString(this.title);
+        dest.writeInt(this.voteCount);
+        dest.writeDouble(this.voteAverage);
+        dest.writeInt(this.id);
+    }
+
+    protected Movie(Parcel in) {
+        this.posterUrl = in.readString();
+        this.smallPosterUrl = in.readString();
+        this.backDropUrl = in.readString();
+        this.overview = in.readString();
+        this.releaseDate = in.readString();
+        this.title = in.readString();
+        this.voteCount = in.readInt();
+        this.voteAverage = in.readDouble();
+        this.id = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }

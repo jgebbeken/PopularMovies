@@ -9,15 +9,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import static dragons.android.popularmovies.MainActivity.BACK_DROP_URL;
-import static dragons.android.popularmovies.MainActivity.ID;
-import static dragons.android.popularmovies.MainActivity.OVERVIEW;
-import static dragons.android.popularmovies.MainActivity.POSTER_URL;
-import static dragons.android.popularmovies.MainActivity.RELEASE_DATE;
-import static dragons.android.popularmovies.MainActivity.SMALL_POSTER;
-import static dragons.android.popularmovies.MainActivity.TITLE;
-import static dragons.android.popularmovies.MainActivity.VOTE_AVERAGE;
-import static dragons.android.popularmovies.MainActivity.VOTE_COUNT;
+import dragons.android.popularmovies.Utilities.Movie;
+
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -30,21 +23,25 @@ public class MovieDetailActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
+        Movie detailMovie = intent.getParcelableExtra("movieSelected");
 
         // imageURL is not used yet but may use it in the future for a shared resource
         // activity transition
         // id for use with SQL favorites later in project 2.
 
-        String imageUrl = intent.getStringExtra(POSTER_URL);
-        String backDropUrl = intent.getStringExtra(BACK_DROP_URL);
-        String title = intent.getStringExtra(TITLE);
-        String overview = intent.getStringExtra(OVERVIEW);
-        int id = intent.getIntExtra(ID,0);
-        String releaseDate = intent.getStringExtra(RELEASE_DATE);
-        String smallPosterUrl = intent.getStringExtra(SMALL_POSTER);
-        int voteCount = intent.getIntExtra(VOTE_COUNT,0);
-        double voteAverage = intent.getDoubleExtra(VOTE_AVERAGE, 0);
+        String imageUrl = detailMovie.getPosterUrl();
+        String backDropUrl = detailMovie.getBackDropUrl();
+        String title = detailMovie.getTitle();
+        String overview = detailMovie.getOverview();
+        int id = detailMovie.getId();
+        String releaseDate = detailMovie.getReleaseDate();
+        String smallPosterUrl = detailMovie.getSmallPosterUrl();
+        int voteCount = detailMovie.getVoteCount();
+        double voteAverage = detailMovie.getVoteAverage();
         float voteRating = (float) voteAverage;
+
+
+
 
         ImageView ivBackground = findViewById(R.id.ivBackground);
         ImageView ivPoster = findViewById(R.id.ivDetailViewPoster);

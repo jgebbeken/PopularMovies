@@ -27,28 +27,23 @@ import dragons.android.popularmovies.Utilities.MovieAdapter;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler,HttpAsyncDataTask.OnTaskCompleted {
 
+    // The first data that will show upon opening the app.
     private final static String INITIAL_ENDPOINT = "now_playing";
 
-    private TextView test;
+    // List of Movie objects that is necessary for the RecyclerView to be used
     private List<Movie> movies;
+
+    // RecyclerView Items
     private RecyclerView recyclerView;
     private MovieAdapter adapter;
-    public static final int FIRST_STRING = 0;
     public static final int SPAN_COUNT = 2;
+
+    // Additional endpoints for users to select
     public static final String POPULAR = "popular";
     public static final String TOP_RATED = "top_rated";
-    public static final String POSTER_URL = "posterUrl";
-    public static final String BACK_DROP_URL ="backDropUrl";
-    public static final String OVERVIEW = "overview";
-    public static final String RELEASE_DATE = "releaseDate";
-    public static final String TITLE = "title";
-    public static final String VOTE_COUNT = "voteCount";
-    public static final String VOTE_AVERAGE = "voteAverage";
-    public static final String ID = "id";
-    public static final String SMALL_POSTER = "small_poster";
 
     //SupportActionBar titles
-    public static final String NOW_PLAYING =" Now Playing";
+    public static final String NOW_PLAYING ="Now Playing";
     public static final String TOP_RATED_TITLE = "Top Rated";
     public static final String MOST_POPULAR = "Most Popular";
 
@@ -58,9 +53,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         setContentView(R.layout.activity_main);
 
         movies = new ArrayList<Movie>();
-
-
-
 
 
             getSupportActionBar().setTitle(NOW_PLAYING);
@@ -151,20 +143,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         Intent detailViewIntent = new Intent(this,MovieDetailActivity.class);
         Movie movieSelected = movies.get(position);
 
-        // Passing data to detail view
-        detailViewIntent.putExtra(TITLE,movieSelected.getTitle());
-        detailViewIntent.putExtra(BACK_DROP_URL, movieSelected.getBackDropUrl());
-        detailViewIntent.putExtra(POSTER_URL, movieSelected.getPosterUrl());
-        detailViewIntent.putExtra(OVERVIEW, movieSelected.getOverview());
-        detailViewIntent.putExtra(RELEASE_DATE, movieSelected.getReleaseDate());
-        detailViewIntent.putExtra(VOTE_COUNT, movieSelected.getVoteCount());
-        detailViewIntent.putExtra(VOTE_AVERAGE, movieSelected.getVoteAverage());
-        detailViewIntent.putExtra(ID, movieSelected.getId());
-        detailViewIntent.putExtra(SMALL_POSTER, movieSelected.getSmallPosterUrl());
-
+        // Passing data to detail view with parcelable implementation
+        detailViewIntent.putExtra("movieSelected",movieSelected);
         startActivity(detailViewIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-
-
     }
 
     // Uses the HttpAsyncDataTask to handle background HTTP tasks and returns list of Movie objects
@@ -185,11 +166,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
     public boolean checkNetwork (Context context) {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-
         return isConnected;
     }
 
