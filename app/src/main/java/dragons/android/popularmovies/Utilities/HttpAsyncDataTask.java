@@ -11,7 +11,8 @@ import java.util.List;
 
 
 /**
- * Created by jgebbeken on 5/10/2018.
+ * HttpAsyncDataTask is designed to handle all HTTP related request, as well as provide
+ * JSON parsing. It can take any List of Objects that are related to the models of this app.
  */
 
 public class HttpAsyncDataTask extends AsyncTask<String, Void, List<?>> {
@@ -47,7 +48,7 @@ public class HttpAsyncDataTask extends AsyncTask<String, Void, List<?>> {
             }
 
 
-            Log.d("URL: ", url.toString());
+            //Log.d("URL: ", url.toString());
             try {
                 json = NetworkUtilities.response(url);
                 Log.d("RV JSON: ", json);
@@ -76,7 +77,7 @@ public class HttpAsyncDataTask extends AsyncTask<String, Void, List<?>> {
 
     public void hasId(int movieId){
         this.movieId = movieId;
-        return;
+
     }
 
     public interface OnTaskCompleted {

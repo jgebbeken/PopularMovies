@@ -4,8 +4,8 @@ import android.util.Log;
 
 import java.util.List;
 
-/**
- * Created by jgebbeken on 5/12/2018.
+/** This class is designed to accept both the video and review List objects and create a centralize
+ *  location to access from.
  */
 
 public class ReviewsAndVideos {
@@ -13,7 +13,7 @@ public class ReviewsAndVideos {
     private List<Review> reviews;
     private List<Video> videos;
 
-    public ReviewsAndVideos(List<Review> reviews, List<Video> videos) {
+    ReviewsAndVideos(List<Review> reviews, List<Video> videos) {
         this.reviews = reviews;
         this.videos = videos;
     }
