@@ -1,7 +1,8 @@
 package dragons.android.popularmovies.Utilities;
 
-import android.content.Context;
+
 import android.os.AsyncTask;
+
 import android.util.Log;
 import java.io.IOException;
 import java.net.URL;
@@ -13,50 +14,73 @@ import java.util.List;
  * Created by jgebbeken on 5/10/2018.
  */
 
-public class HttpAsyncDataTask extends AsyncTask<String, Void, List<Movie>> {
+public class HttpAsyncDataTask extends AsyncTask<String, Void, List<?>> {
 
-    private Context context;
     private OnTaskCompleted listener;
 
-    private URL url;
     private String json;
-    private List<Movie> movies;
+    private int movieId;
+
 
 
     public HttpAsyncDataTask(OnTaskCompleted activityContext){
 
         this.listener = activityContext;
+
+
     }
 
 
         @Override
-        protected List<Movie> doInBackground(String... strings) {
+        protected List<?> doInBackground(String... strings) {
 
-            movies = new ArrayList<Movie>();
-            url = NetworkUtilities.buildUrl(strings[0]);
+
+            String endpoint = strings[0];
+
+            URL url;
+            switch (endpoint){
+                case "videosReviews":
+                    url = NetworkUtilities.buildUrl(movieId);
+                    break;
+                default:
+                    url = NetworkUtilities.buildUrl(strings[0]);
+            }
+
+
             Log.d("URL: ", url.toString());
             try {
                 json = NetworkUtilities.response(url);
+                Log.d("RV JSON: ", json);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            movies = JSONUtilities.movieParsing(json);
 
-
-
-            return movies;
+            switch (endpoint) {
+                case "videosReviews":
+                    List<ReviewsAndVideos> rv = new ArrayList<>();
+                     rv.add(JSONUtilities.videoAndReviewParsing(json));
+                    return rv;
+                default:
+                    List<Movie> movies;
+                    movies = JSONUtilities.movieParsing(json);
+                    return movies;
+            }
         }
 
         @Override
-        protected void onPostExecute(List<Movie> movies) {
-            super.onPostExecute(movies);
-            listener.onTaskCompleted(movies);
-
-
+        protected void onPostExecute(List<?> list) {
+            super.onPostExecute(list);
+            listener.onTaskCompleted(list);
         }
 
+
+    public void hasId(int movieId){
+        this.movieId = movieId;
+        return;
+    }
+
     public interface OnTaskCompleted {
-        void onTaskCompleted(List<Movie> response);
+        void onTaskCompleted(List<?> response);
     }
 
 }

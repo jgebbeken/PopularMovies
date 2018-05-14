@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -151,9 +150,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
     // Uses the HttpAsyncDataTask to handle background HTTP tasks and returns list of Movie objects
     // to give it to the adapter
     @Override
-    public void onTaskCompleted(List<Movie> response) {
+    public void onTaskCompleted(List<?> response) {
 
-        movies = response;
+        movies = (List<Movie>) response;
         LayoutAnimationController animationController = AnimationUtils
                 .loadLayoutAnimation(MainActivity.this,R.anim.grid_translate_up);
         recyclerView.setLayoutAnimation(animationController);

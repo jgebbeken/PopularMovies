@@ -2,6 +2,8 @@ package dragons.android.popularmovies.Utilities;
 
 
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,13 +29,22 @@ public class JSONUtilities {
     private final static String RELEASE_DATE = "release_date";
     private final static String ID = "id";
 
+    private final static String VIDEO_OBJECT = "videos";
+    private final static String VIDEO_NAME = "name";
+    private final static String VIDEO_URL = "key";
+    private final static String VIDEO_RES = "size";
+    private final static String VIDEO_TYPE = "type";
+
+    private final static String REVIEW_OBJECT = "reviews";
+    private final static String AUTHOR = "author";
+    private final static String CONTENT = "content";
+
 
 
     public static List<Movie> movieParsing(String json){
 
 
         List<Movie> movies = new ArrayList<>();
-
 
         try {
             JSONObject jsonMovies = new JSONObject(json);
@@ -63,5 +74,54 @@ public class JSONUtilities {
 
 
         return movies;
+    }
+
+    public static ReviewsAndVideos videoAndReviewParsing(String json) {
+
+
+        List<Video> videos = new ArrayList<>();
+        List<Review> reviews = new ArrayList<>();
+
+        try {
+            JSONObject jsonVideos = new JSONObject(json).getJSONObject(VIDEO_OBJECT);
+            JSONArray videosArray = jsonVideos.getJSONArray(ARRAY_RESULTS);
+
+            for(int i = 0; i < videosArray.length(); i++) {
+
+                Video video = new Video();
+
+                JSONObject object = videosArray.getJSONObject(i);
+
+                video.setVideoName(object.optString(VIDEO_NAME));
+                video.setVideoRes(object.optString(VIDEO_RES));
+                video.setType(object.optString(VIDEO_TYPE));
+                video.setVideoUrl(object.optString(VIDEO_URL));
+
+                videos.add(video);
+            }
+
+            JSONObject jsonReviews = new JSONObject(json).getJSONObject(REVIEW_OBJECT);
+            JSONArray reviewArray = jsonReviews.getJSONArray(ARRAY_RESULTS);
+
+            for(int i = 0; i < jsonReviews.length(); i++){
+
+                Review review = new Review();
+
+                JSONObject object = reviewArray.getJSONObject(i);
+
+                review.setAuthor(object.optString(AUTHOR));
+                review.setContent(object.optString(CONTENT));
+
+                reviews.add(review);
+            }
+
+            ReviewsAndVideos reviewsAndVideos = new ReviewsAndVideos(reviews,videos);
+            return reviewsAndVideos;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 }

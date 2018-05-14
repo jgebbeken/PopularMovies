@@ -3,6 +3,8 @@ package dragons.android.popularmovies.Utilities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 /**
  * Movie object model used within this application. The Parcelable implementation is used to
  * quickly transfer Movie objects to Activities with ease with only one Intent.putExtra.
@@ -23,6 +25,7 @@ public class Movie implements Parcelable {
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
     private static final String IMAGE_FULL_SIZE_URL = "https://image.tmdb.org/t/p/original";
     private static final String IMAGE_SMALL_POSTER_URL = "https://image.tmdb.org/t/p/w300";
+
 
 
     public Movie(){
@@ -65,6 +68,7 @@ public class Movie implements Parcelable {
     public void setBackDropUrl(String backDropUrl) {
         this.backDropUrl = IMAGE_FULL_SIZE_URL + backDropUrl;
     }
+
 
     public String getOverview() {
         return overview;

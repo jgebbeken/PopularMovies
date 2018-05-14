@@ -3,18 +3,26 @@ package dragons.android.popularmovies;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import dragons.android.popularmovies.Utilities.HttpAsyncDataTask;
 import dragons.android.popularmovies.Utilities.Movie;
+import dragons.android.popularmovies.Utilities.Review;
+import dragons.android.popularmovies.Utilities.ReviewsAndVideos;
 
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity implements HttpAsyncDataTask.OnTaskCompleted {
 
     private static final String NUM_OF_VOTES = " votes";
+    private static final String VIDEOS_REVIEW_ENDPOINT = "videosReviews";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +49,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         float voteRating = (float) voteAverage;
 
 
-
+        HttpAsyncDataTask task = new HttpAsyncDataTask(this);
+        task.hasId(id);
+        task.execute(VIDEOS_REVIEW_ENDPOINT);
 
         ImageView ivBackground = findViewById(R.id.ivBackground);
         ImageView ivPoster = findViewById(R.id.ivDetailViewPoster);
@@ -72,6 +82,15 @@ public class MovieDetailActivity extends AppCompatActivity {
         ratingBar.setIsIndicator(true);
         ratingBar.setStepSize(0.1f);
         ratingBar.setRating(voteRating);
+
+    }
+
+    @Override
+    public void onTaskCompleted(List<?> response) {
+
+        List<ReviewsAndVideos> rv = new ArrayList<>();
+        rv = (List<ReviewsAndVideos>) response;
+
 
     }
 }
