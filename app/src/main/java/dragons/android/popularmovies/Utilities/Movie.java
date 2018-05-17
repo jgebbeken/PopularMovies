@@ -41,6 +41,7 @@ public class Movie implements Parcelable {
         this.title = title;
         this.voteCount = voteCount;
         this.voteAverage = voteAverage;
+        this.id = id;
     }
 
 

@@ -15,7 +15,8 @@ import java.util.List;
 import dragons.android.popularmovies.R;
 
 /**
- * Purpose of this Adapter is to bind the movie objects to the view holders.
+ * Purpose of this Adapter is to bind the movie objects to the view holders. This adapter is used
+ * in the MainActivity
  */
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {

@@ -8,11 +8,14 @@ public class Video {
 
 
     private static final String YOUTUBE_BASE_URL ="https://www.youtube.com/watch?v=";
+    private static final String YOUTUBE_THUMBNAIL_URL = "https://img.youtube.com/vi/";
+    private static final String YOUTUBE_THUMBNAIL_ENDPOINT = "/hqdefault.jpg";
 
     private String videoName;
     private String videoRes;
     private String type;
     private String videoUrl;
+    private String key;
 
     public Video() {
     }
@@ -53,7 +56,13 @@ public class Video {
         this.type = type;
     }
 
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
+    public void setVideoUrl(String key) {
+        this.key = key;
+        this.videoUrl = YOUTUBE_BASE_URL + key;
+    }
+
+    public String getThumbnail() {
+        String thumbnailUrl = YOUTUBE_THUMBNAIL_URL + key + YOUTUBE_THUMBNAIL_ENDPOINT;
+        return thumbnailUrl;
     }
 }

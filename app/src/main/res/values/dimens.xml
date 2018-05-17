@@ -15,6 +15,6 @@
 
     <dimen name="rating_bar_width">162dp</dimen>
     <dimen name="rating_bar_height">18dp</dimen>
-
+    <dimen name="spacing">0dp</dimen>
 
 </resources>

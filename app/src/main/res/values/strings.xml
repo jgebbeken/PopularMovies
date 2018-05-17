@@ -8,4 +8,6 @@
     <string name="content_description_large_poster">Large Poster Image</string>
     <string name="content_description_small_poster">Small Poster Image</string>
     <string name="backdrop">Backdrop of movie</string>
+
+    <string name="content_description_thumbnail">YouTube Movie Thumbnail</string>
 </resources>

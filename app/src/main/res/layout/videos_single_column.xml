@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="100dp">
+
+    <ImageView
+        android:id="@+id/ivThumbnail"
+        android:contentDescription="@string/content_description_small_poster"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintDimensionRatio="w,16:9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/presence_video_online" />
+
+    <TextView
+        android:id="@+id/tvYouTubeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/padding_eight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivThumbnail"
+        app:layout_constraintTop_toTopOf="@+id/ivThumbnail"
+        tools:text="Action...Avengers: Infinity War" />
+
+    <TextView
+        android:id="@+id/tvVideoFromSite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_eight"
+        app:layout_constraintStart_toStartOf="@+id/tvYouTubeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvYouTubeTitle"
+        tools:text="Youtube" />
+
+    <TextView
+        android:id="@+id/tvVideoType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_eight"
+        app:layout_constraintStart_toStartOf="@+id/tvVideoFromSite"
+        app:layout_constraintTop_toBottomOf="@+id/tvVideoFromSite"
+        tools:text="Trailer" />
+
+    <TextView
+        android:id="@+id/tvVideoRes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@+id/tvVideoType"
+        app:layout_constraintTop_toTopOf="@+id/tvVideoType"
+        tools:text="1080p" />
+</android.support.constraint.ConstraintLayout>

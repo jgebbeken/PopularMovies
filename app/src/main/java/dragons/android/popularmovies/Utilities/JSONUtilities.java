@@ -2,7 +2,7 @@ package dragons.android.popularmovies.Utilities;
 
 
 
-import android.util.Log;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by jgebbeken
+ *
  * The purpose of this JSON Utilities is to provide a way to pull from the TMDB api and put
  * them in the movie object
  */
 
-public class JSONUtilities {
+class JSONUtilities {
 
     private final static String ARRAY_RESULTS = "results";
     private final static String TITLE = "title";
@@ -41,7 +41,7 @@ public class JSONUtilities {
 
 
 
-    public static List<Movie> movieParsing(String json){
+    static List<Movie> movieParsing(String json){
 
 
         List<Movie> movies = new ArrayList<>();
@@ -76,7 +76,7 @@ public class JSONUtilities {
         return movies;
     }
 
-    public static ReviewsAndVideos videoAndReviewParsing(String json) {
+    static ReviewsAndVideos videoAndReviewParsing(String json) {
 
 
         List<Video> videos = new ArrayList<>();
@@ -115,7 +115,8 @@ public class JSONUtilities {
                 reviews.add(review);
             }
 
-            ReviewsAndVideos reviewsAndVideos = new ReviewsAndVideos(reviews,videos);
+            ReviewsAndVideos reviewsAndVideos;
+            reviewsAndVideos = new ReviewsAndVideos(reviews,videos);
             return reviewsAndVideos;
 
         } catch (JSONException e) {

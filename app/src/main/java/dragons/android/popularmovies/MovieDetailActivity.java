@@ -3,19 +3,14 @@ package dragons.android.popularmovies;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import dragons.android.popularmovies.Utilities.HttpAsyncDataTask;
 import dragons.android.popularmovies.Utilities.Movie;
-import dragons.android.popularmovies.Utilities.Review;
 import dragons.android.popularmovies.Utilities.ReviewsAndVideos;
 
 
@@ -77,7 +72,7 @@ public class MovieDetailActivity extends AppCompatActivity implements HttpAsyncD
         // Populate UI TextViews and Rating bar controls
         tvTitle.setText(title);
         tvReleaseDate.setText(releaseDate);
-        tvVoteCount.setText(String.valueOf(voteCount) + NUM_OF_VOTES);
+        tvVoteCount.setText(new StringBuilder().append(String.valueOf(voteCount)).append(NUM_OF_VOTES).toString());
         tvOverview.setText(overview);
         ratingBar.setIsIndicator(true);
         ratingBar.setStepSize(0.1f);

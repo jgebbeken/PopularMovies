@@ -19,6 +19,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import dragons.android.popularmovies.Utilities.ColumnSpacing;
 import dragons.android.popularmovies.Utilities.HttpAsyncDataTask;
 import dragons.android.popularmovies.Utilities.Movie;
 import dragons.android.popularmovies.Utilities.MovieAdapter;
@@ -62,7 +63,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
             recyclerView.setLayoutManager(new GridLayoutManager(this, SPAN_COUNT));
             adapter = new MovieAdapter(movies, this);
 
-
+            int spacing = getResources().getDimensionPixelSize(R.dimen.spacing);
+            recyclerView.addItemDecoration(new ColumnSpacing(spacing));
             recyclerView.setAdapter(adapter);
 
             adapter.setOnMovieClickHandler(this);
