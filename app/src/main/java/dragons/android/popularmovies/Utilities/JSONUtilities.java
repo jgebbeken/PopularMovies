@@ -103,7 +103,7 @@ class JSONUtilities {
             JSONObject jsonReviews = new JSONObject(json).getJSONObject(REVIEW_OBJECT);
             JSONArray reviewArray = jsonReviews.getJSONArray(ARRAY_RESULTS);
 
-            for(int i = 0; i < jsonReviews.length(); i++){
+            for(int i = 0; i < reviewArray.length(); i++){
 
                 Review review = new Review();
 

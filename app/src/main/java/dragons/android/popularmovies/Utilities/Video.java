@@ -62,7 +62,6 @@ public class Video {
     }
 
     public String getThumbnail() {
-        String thumbnailUrl = YOUTUBE_THUMBNAIL_URL + key + YOUTUBE_THUMBNAIL_ENDPOINT;
-        return thumbnailUrl;
+        return YOUTUBE_THUMBNAIL_URL + key + YOUTUBE_THUMBNAIL_ENDPOINT;
     }
 }

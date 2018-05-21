@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="4dp">
+
+    <android.support.constraint.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvReviewerName"
+            android:layout_width="@dimen/zero_width"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Christopher Walker" />
+
+        <TextView
+            android:id="@+id/tvReviewerContent"
+            android:layout_width="@dimen/zero_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_eight"
+            app:layout_constraintStart_toStartOf="@+id/tvReviewerName"
+            app:layout_constraintTop_toBottomOf="@+id/tvReviewerName"
+            tools:text="I personally love the movie so much that I actually went to see it 5 times. Once with myself because I wanted to see the movie early." />
+
+        <View
+            android:layout_width="360dp"
+            android:layout_height="@dimen/line_thickness"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="@dimen/margin_eight"
+            android:layout_marginTop="16dp"
+            android:background="@color/backgroundGrid"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvReviewerContent" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

@@ -16,5 +16,8 @@
     <dimen name="rating_bar_width">162dp</dimen>
     <dimen name="rating_bar_height">18dp</dimen>
     <dimen name="spacing">0dp</dimen>
+    <dimen name="header_font_size">18sp</dimen>
+
+    <dimen name="line_thickness">2dp</dimen>
 
 </resources>

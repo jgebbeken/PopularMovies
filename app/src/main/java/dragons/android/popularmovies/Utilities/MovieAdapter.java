@@ -66,7 +66,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
             posterImage = itemView.findViewById(R.id.large_poster);
 
-            itemView. setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(mMovieHandler != null) {
@@ -84,8 +84,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.movie_item,parent,false);
-        MovieViewHolder movieViewHolder = new MovieViewHolder(view);
-        return movieViewHolder;
+        return new MovieViewHolder(view);
     }
 
     @Override

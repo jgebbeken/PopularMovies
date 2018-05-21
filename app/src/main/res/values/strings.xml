@@ -10,4 +10,9 @@
     <string name="backdrop">Backdrop of movie</string>
 
     <string name="content_description_thumbnail">YouTube Movie Thumbnail</string>
+    <string name="horizontal_divider">A line divider</string>
+
+
+    <string name="review_header">Reviews</string>
+    <string name="video_header">Trailers and Clips</string>
 </resources>

@@ -60,10 +60,12 @@ public class HttpAsyncDataTask extends AsyncTask<String, Void, List<?>> {
                 case "videosReviews":
                     List<ReviewsAndVideos> rv = new ArrayList<>();
                      rv.add(JSONUtilities.videoAndReviewParsing(json));
+                     Log.d("RV Array", String.valueOf(rv.size()));
                     return rv;
                 default:
-                    List<Movie> movies;
-                    movies = JSONUtilities.movieParsing(json);
+                    List<Movie> movies = new ArrayList<>();
+                    movies.addAll(JSONUtilities.movieParsing(json));
+                    Log.d("Movies", String.valueOf(movies.size()));
                     return movies;
             }
         }
@@ -71,6 +73,7 @@ public class HttpAsyncDataTask extends AsyncTask<String, Void, List<?>> {
         @Override
         protected void onPostExecute(List<?> list) {
             super.onPostExecute(list);
+            Log.d("List", String.valueOf(list.size()));
             listener.onTaskCompleted(list);
         }
 
