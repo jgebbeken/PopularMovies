@@ -11,5 +11,8 @@
     <item android:id="@+id/nowPlaying"
         android:title="@string/Now_Playing"
         app:showAsAction="never"/>
+    <item android:id="@+id/favorites"
+        android:title="@string/Favorites"
+        app:showAsAction="never" />
 
 </menu>

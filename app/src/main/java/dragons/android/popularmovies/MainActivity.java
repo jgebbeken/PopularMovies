@@ -14,15 +14,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ImageView;
 import android.widget.Toast;
-
+import com.facebook.stetho.Stetho;
 import java.util.ArrayList;
 import java.util.List;
-
-import dragons.android.popularmovies.Utilities.ColumnSpacing;
+import dragons.android.popularmovies.Contracts.MovieFavoritesContract;
+import dragons.android.popularmovies.Helpers.FavoriteHelper;
 import dragons.android.popularmovies.Utilities.HttpAsyncDataTask;
-import dragons.android.popularmovies.Utilities.Movie;
-import dragons.android.popularmovies.Utilities.MovieAdapter;
+import dragons.android.popularmovies.Models.Movie;
+import dragons.android.popularmovies.Adapters.MovieAdapter;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler,HttpAsyncDataTask.OnTaskCompleted {
@@ -33,54 +34,84 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
     // List of Movie objects that is necessary for the RecyclerView to be used
     private List<Movie> movies;
 
+    private static final String BUNDLE_LAYOUT = "layout";
+
     // RecyclerView Items
     private RecyclerView recyclerView;
     private MovieAdapter adapter;
-    public static final int SPAN_COUNT = 2;
+
+    //onSaveInstanceState items
+    private static final String MOVIES_SAVED = "movieSaved";
+    private static final String LAST_POSITION = "lastPosition";
+
+    // Intent Items
+    private static final String MOVIE_SELECTED = "movieSelected";
+
+    private static final int SPAN_COUNT = 2;
+    private GridLayoutManager gridLayoutManager;
+
 
     // Additional endpoints for users to select
-    public static final String POPULAR = "popular";
-    public static final String TOP_RATED = "top_rated";
+    private static final String POPULAR = "popular";
+    private static final String TOP_RATED = "top_rated";
 
     //SupportActionBar titles
-    public static final String NOW_PLAYING ="Now Playing";
-    public static final String TOP_RATED_TITLE = "Top Rated";
-    public static final String MOST_POPULAR = "Most Popular";
+    private static final String NOW_PLAYING ="Now Playing";
+    private static final String TOP_RATED_TITLE = "Top Rated";
+    private static final String MOST_POPULAR = "Most Popular";
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle saveInstanceState) {
+        super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_main);
 
-        movies = new ArrayList<Movie>();
+
+        // Facebook Debugging tool that uses Chrome DevTools to do Network and
+        // Database Inspections.
+        // http://facebook.github.io/stetho/
+
+        Stetho.initializeWithDefaults(this);
+
+        movies = new ArrayList<>();
 
 
+        if(getSupportActionBar() != null) {
             getSupportActionBar().setTitle(NOW_PLAYING);
+        }
+        // Setup the recycler view with the GirdLayoutManger that spans two columns.
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        gridLayoutManager = new GridLayoutManager(this,SPAN_COUNT);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        adapter = new MovieAdapter(movies, this);
+        recyclerView.setAdapter(adapter);
 
-            // Setup the recycler view with the GirdLayoutManger that spans two columns.
-            recyclerView = findViewById(R.id.recyclerView);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new GridLayoutManager(this, SPAN_COUNT));
-            adapter = new MovieAdapter(movies, this);
+        adapter.setOnMovieClickHandler(this);
+        adapter.setMainOnFavoriteClickHandler(this);
 
-            int spacing = getResources().getDimensionPixelSize(R.dimen.spacing);
-            recyclerView.addItemDecoration(new ColumnSpacing(spacing));
-            recyclerView.setAdapter(adapter);
-
-            adapter.setOnMovieClickHandler(this);
-
-        if(checkNetwork(this)) {
-
-            // We need to do the networking outside the main thread. JSON is downloaded outside the
-            // main thread as well.
-            //new ProcessMovieTask().execute(INITIAL_ENDPOINT);
-            HttpAsyncDataTask task = new HttpAsyncDataTask(MainActivity.this);
-            task.execute(INITIAL_ENDPOINT);
-
+        if(saveInstanceState != null){
+            ArrayList<Movie> savedMovie;
+            savedMovie = saveInstanceState.getParcelableArrayList(MOVIES_SAVED);
+            LayoutAnimationController animationController = AnimationUtils
+                    .loadLayoutAnimation(MainActivity.this,R.anim.grid_translate_up);
+            recyclerView.setLayoutAnimation(animationController);
+            adapter.updateAdapter(savedMovie, MainActivity.this);
+            recyclerView.getLayoutManager().onRestoreInstanceState(saveInstanceState);
+            gridLayoutManager.scrollToPosition(saveInstanceState.getInt(LAST_POSITION));
 
         }
-        else {
-            toastNoInternet(this);
+        else{
+            if (checkNetwork(this)) {
+
+                // We need to do the networking outside the main thread. JSON is downloaded outside the
+                // main thread as well.
+                HttpAsyncDataTask task = new HttpAsyncDataTask(MainActivity.this);
+                task.execute(INITIAL_ENDPOINT);
+
+            } else {
+                toastNoInternet(this);
+            }
         }
 
 
@@ -104,35 +135,57 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
 
 
                 if(checkNetwork(this)) {
-                    getSupportActionBar().setTitle(MOST_POPULAR);
+
+                    if(getSupportActionBar() != null){
+                        getSupportActionBar().setTitle(MOST_POPULAR);
+                    }
                     HttpAsyncDataTask task = new HttpAsyncDataTask(MainActivity.this);
                     task.execute(POPULAR);
                     return true;
                 } else {
                     toastNoInternet(this);
-                    break;
                 }
+                break;
 
             case R.id.highestRated:
                 if(checkNetwork(this)) {
-                    getSupportActionBar().setTitle(TOP_RATED_TITLE);
+
+                    if(getSupportActionBar() != null){
+                        getSupportActionBar().setTitle(TOP_RATED_TITLE);
+                    }
                     HttpAsyncDataTask task = new HttpAsyncDataTask(MainActivity.this);
                     task.execute(TOP_RATED);
                     return true;
-                } else
+                } else {
                     toastNoInternet(this);
+                }
+                break;
 
             case R.id.nowPlaying:
                 if(checkNetwork(this)) {
-                    getSupportActionBar().setTitle(NOW_PLAYING);
+                    if(getSupportActionBar() != null){
+                        getSupportActionBar().setTitle(NOW_PLAYING);
+                    }
                     HttpAsyncDataTask task = new HttpAsyncDataTask(MainActivity.this);
                     task.execute(INITIAL_ENDPOINT);
                     return true;
                 }
                 else {
                     toastNoInternet(this);
-                    break;
                 }
+                break;
+            case R.id.favorites:
+                if(checkNetwork(this)) {
+                    if(getSupportActionBar() != null){
+                        getSupportActionBar().setTitle(R.string.Favorites);
+                    }
+                    List<?> favorites;
+                    favorites = FavoriteHelper.getFavorites(this);
+
+                    onTaskCompleted(favorites);
+
+                }
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -145,9 +198,30 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         Movie movieSelected = movies.get(position);
 
         // Passing data to detail view with parcelable implementation
-        detailViewIntent.putExtra("movieSelected",movieSelected);
+        detailViewIntent.putExtra(MOVIE_SELECTED,movieSelected);
         startActivity(detailViewIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
+
+    @Override
+    public void onMainFavoriteClick(int position) {
+        Movie movieSelected = movies.get(position);
+        String movieId = String.valueOf(movieSelected.getId());
+
+        ImageView imageView = findViewById(R.id.favoriteStar);
+
+        if(FavoriteHelper.recordExists(movieId,this)){
+            getContentResolver().delete(MovieFavoritesContract.MovieFavoritesEntry.CONTENT_URI.buildUpon().appendPath(movieId)
+                            .build(),
+                    MovieFavoritesContract.MovieFavoritesEntry.MOVIE_ID, new String[]{String.valueOf(movieSelected.getId())});
+            imageView.setImageResource(R.drawable.btn_star_big_off);
+        }
+        else{
+            FavoriteHelper.addFavorites(movieSelected,this);
+            imageView.setImageResource(R.drawable.btn_star_big_on);
+        }
+
+    }
+
 
     // Uses the HttpAsyncDataTask to handle background HTTP tasks and returns list of Movie objects
     // to give it to the adapter
@@ -158,24 +232,45 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         LayoutAnimationController animationController = AnimationUtils
                 .loadLayoutAnimation(MainActivity.this,R.anim.grid_translate_up);
         recyclerView.setLayoutAnimation(animationController);
-
         adapter.updateAdapter(movies, MainActivity.this);
+
     }
 
     // Checks the network to see if there is no internet then return a boolean back based on
     // connectivity.
-    public boolean checkNetwork (Context context) {
+    private boolean checkNetwork(Context context) {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        return isConnected;
+        if(connectivityManager != null ) {
+            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+            return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        } else{
+            return false;
+        }
+
     }
 
-    public void toastNoInternet (Context context) {
+    private void toastNoInternet(Context context) {
         Toast.makeText(context,"Unable to download list. No internet connection. Wait" +
                         " for internet to connect before trying again",
                 Toast.LENGTH_SHORT).show();
+
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+
+        recyclerView.getLayoutManager().onSaveInstanceState();
+
+        int position = gridLayoutManager.findFirstCompletelyVisibleItemPosition();
+
+        outState.putParcelable(BUNDLE_LAYOUT, recyclerView.getLayoutManager().onSaveInstanceState());
+        outState.putInt(LAST_POSITION,position);
+        ArrayList<Movie> savedMovie = new ArrayList<>();
+        savedMovie.addAll(movies);
+        outState.putParcelableArrayList(MOVIES_SAVED,savedMovie);
     }
 
 

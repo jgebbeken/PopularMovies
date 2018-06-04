@@ -1,7 +1,7 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.Models;
 
 /**
- * Created by jgebbeken on 5/13/2018.
+ * Trailer and clips model
  */
 
 public class Video {
@@ -20,6 +20,7 @@ public class Video {
     public Video() {
     }
 
+    @SuppressWarnings("unused")
     public Video(String videoName, String videoRes, String type, String videoUrl) {
         this.videoName = videoName;
         this.videoRes = videoRes;

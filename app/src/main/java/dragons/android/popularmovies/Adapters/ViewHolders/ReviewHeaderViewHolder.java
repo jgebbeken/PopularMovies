@@ -1,4 +1,4 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.Adapters.ViewHolders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -7,12 +7,12 @@ import android.widget.TextView;
 import dragons.android.popularmovies.R;
 
 /**
- * Created by jgebbeken on 5/20/2018.
+ * Header used in separating data in the Movie Detail recycler
  */
 
 public class ReviewHeaderViewHolder extends RecyclerView.ViewHolder {
 
-    TextView reviewerSection;
+    private final TextView reviewerSection;
 
     public ReviewHeaderViewHolder(View itemView) {
         super(itemView);
@@ -26,7 +26,4 @@ public class ReviewHeaderViewHolder extends RecyclerView.ViewHolder {
         return reviewerSection;
     }
 
-    public void setReviewerSection(TextView reviewerSection) {
-        this.reviewerSection = reviewerSection;
-    }
 }

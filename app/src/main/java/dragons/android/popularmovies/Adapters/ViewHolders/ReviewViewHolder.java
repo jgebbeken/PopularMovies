@@ -1,4 +1,4 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.Adapters.ViewHolders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -7,13 +7,13 @@ import android.widget.TextView;
 import dragons.android.popularmovies.R;
 
 /**
- * Created by jgebbeken on 5/20/2018.
+ *  Used in Movie Detail Recycler returns viewHolders to the controller.
  */
 
 public class ReviewViewHolder extends RecyclerView.ViewHolder {
 
-    TextView reviewer;
-    TextView reviewerContent;
+    private final TextView reviewer;
+    private final TextView reviewerContent;
 
 
     public ReviewViewHolder(View itemView) {
@@ -27,15 +27,8 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
         return reviewer;
     }
 
-    public void setReviewer(TextView reviewer) {
-        this.reviewer = reviewer;
-    }
-
     public TextView getReviewerContent() {
         return reviewerContent;
     }
 
-    public void setReviewerContent(TextView reviewerContent) {
-        this.reviewerContent = reviewerContent;
-    }
 }

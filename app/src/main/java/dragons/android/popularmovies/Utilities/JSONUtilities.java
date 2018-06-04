@@ -11,6 +11,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import dragons.android.popularmovies.Models.Movie;
+import dragons.android.popularmovies.Models.Review;
+import dragons.android.popularmovies.Models.Video;
+
 /**
  *
  * The purpose of this JSON Utilities is to provide a way to pull from the TMDB api and put

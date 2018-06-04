@@ -1,9 +1,7 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.Models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.List;
 
 /**
  * Movie object model used within this application. The Parcelable implementation is used to
@@ -32,6 +30,7 @@ public class Movie implements Parcelable {
 
     }
 
+    @SuppressWarnings("unused")
     public Movie(String posterUrl, String backDropUrl, String overview, String releaseDate, String title, int voteCount, double voteAverage, int id){
 
         this.posterUrl = IMAGE_BASE_URL + posterUrl;
@@ -62,6 +61,10 @@ public class Movie implements Parcelable {
         setSmallPosterUrl(posterUrl);
     }
 
+    public void setPosterFromCursor(String posterUrl){
+        this.posterUrl = posterUrl;
+    }
+
     public String getBackDropUrl() {
         return backDropUrl;
     }
@@ -70,6 +73,9 @@ public class Movie implements Parcelable {
         this.backDropUrl = IMAGE_FULL_SIZE_URL + backDropUrl;
     }
 
+    public void setBackDropFromCursor(String backDropUrl){
+        this.backDropUrl = backDropUrl;
+    }
 
     public String getOverview() {
         return overview;
@@ -112,8 +118,12 @@ public class Movie implements Parcelable {
         this.voteAverage = voteAverage;
     }
 
-    public void setSmallPosterUrl(String posterUrl){
+    private void setSmallPosterUrl(String posterUrl){
         smallPosterUrl = IMAGE_SMALL_POSTER_URL + posterUrl;
+    }
+
+    public void setSmallPosterFromCursor(String smallPosterUrl){
+        this.smallPosterUrl = smallPosterUrl;
     }
 
     public String getSmallPosterUrl() {
@@ -139,7 +149,7 @@ public class Movie implements Parcelable {
         dest.writeInt(this.id);
     }
 
-    protected Movie(Parcel in) {
+    private Movie(Parcel in) {
         this.posterUrl = in.readString();
         this.smallPosterUrl = in.readString();
         this.backDropUrl = in.readString();
@@ -151,6 +161,7 @@ public class Movie implements Parcelable {
         this.id = in.readInt();
     }
 
+    @SuppressWarnings("unused")
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel source) {

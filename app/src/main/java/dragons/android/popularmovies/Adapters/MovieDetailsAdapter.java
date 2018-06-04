@@ -1,20 +1,31 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
-
+import dragons.android.popularmovies.Helpers.FavoriteHelper;
+import dragons.android.popularmovies.Helpers.ReviewHeader;
+import dragons.android.popularmovies.Helpers.VideoHeader;
+import dragons.android.popularmovies.Models.Movie;
+import dragons.android.popularmovies.Models.Review;
+import dragons.android.popularmovies.Models.Video;
 import dragons.android.popularmovies.R;
+import dragons.android.popularmovies.Adapters.ViewHolders.MovieDetailViewHolder;
+import dragons.android.popularmovies.Adapters.ViewHolders.ReviewHeaderViewHolder;
+import dragons.android.popularmovies.Adapters.ViewHolders.ReviewViewHolder;
+import dragons.android.popularmovies.Adapters.ViewHolders.TrailerClipsViewHolder;
+import dragons.android.popularmovies.Adapters.ViewHolders.VideoHeaderViewHolder;
 
 /**
- * Created by jgebbeken on 5/16/2018.
+ * This is the multi view Movie Detail Adapter. Displays 3 different views (Movie Details,
+ * trailers and clips, reviews) and two headers.
  */
 
 
@@ -23,6 +34,7 @@ public class MovieDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private Context context;
     private OnVideoClickHandler onVideoClickHandler;
+    private OnFavoritesClickHandler onFavoritesClickHandler;
 
 
     private List<Object> items = new ArrayList<>();
@@ -40,8 +52,17 @@ public class MovieDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         void onVideoClick (int position);
     }
 
+    public interface OnFavoritesClickHandler {
+        void onFavoritesClick( int position);
+    }
+
+
     public void setOnVideoClickHandler(OnVideoClickHandler clickHandler){
         onVideoClickHandler = clickHandler;
+    }
+
+    public void setOnFavoritesClickHandler(OnFavoritesClickHandler clickHandler) {
+        onFavoritesClickHandler = clickHandler;
     }
 
 
@@ -80,8 +101,10 @@ public class MovieDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
+
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -105,7 +128,7 @@ public class MovieDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 break;
             default:
                 View movieDetailView = inflater.inflate(R.layout.movie_details, parent, false);
-                viewHolder = new MovieDetailViewHolder(movieDetailView);
+                viewHolder = new MovieDetailViewHolder(movieDetailView, onFavoritesClickHandler);
                 break;
 
         }
@@ -114,7 +137,7 @@ public class MovieDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
 
         switch (holder.getItemViewType()) {
@@ -144,6 +167,7 @@ public class MovieDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
+    @SuppressLint("SetTextI18n")
     private void configMovieViewHolder(MovieDetailViewHolder holder, int position) {
 
         Movie movie = (Movie) items.get(position);
@@ -156,6 +180,17 @@ public class MovieDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         holder.getTvReleaseDate().setText(movie.getReleaseDate());
         holder.getTvTitle().setText(movie.getTitle());
         holder.getTvVoteCount().setText(String.valueOf(movie.getVoteCount()) + NUM_VOTES);
+
+        String movieId = String.valueOf(movie.getId());
+
+        if(FavoriteHelper.recordExists(movieId,context.getApplicationContext())){
+            Picasso.get().load(R.drawable.btn_star_big_on).into(holder.getIvFavorite());
+        }
+        else {
+            Picasso.get().load(R.drawable.btn_star_big_off).into(holder.getIvFavorite());
+        }
+
+
     }
 
     private void configTrailerClipsViewHolder(TrailerClipsViewHolder holder, int position) {

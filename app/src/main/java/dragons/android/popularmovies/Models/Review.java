@@ -1,7 +1,7 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.Models;
 
 /**
- * Created by jgebbeken on 5/13/2018.
+ *  Review Model
  */
 
 public class Review {

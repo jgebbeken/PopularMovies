@@ -3,6 +3,7 @@
     <string name="Top_Rated">Top Rated</string>
     <string name="Most_Popular">Most Popular</string>
     <string name="Now_Playing">Now Playing</string>
+    <string name="Favorites">Favorites</string>
     <string name="release_date">Release date</string>
 
     <string name="content_description_large_poster">Large Poster Image</string>
@@ -10,8 +11,9 @@
     <string name="backdrop">Backdrop of movie</string>
 
     <string name="content_description_thumbnail">YouTube Movie Thumbnail</string>
+    <string name="content_description_favorite_icon">Favorite Indicator</string>
     <string name="horizontal_divider">A line divider</string>
-
+    <string name="add_favorite_title">Add to favorites</string>
 
     <string name="review_header">Reviews</string>
     <string name="video_header">Trailers and Clips</string>

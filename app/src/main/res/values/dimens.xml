@@ -9,15 +9,19 @@
     <dimen name="poster_heights">130dp</dimen>
     <dimen name="title_font_size">18sp</dimen>
 
-    <dimen name="backdrop_height">256dp</dimen>
+    <!--<dimen name="backdrop_height">256dp</dimen>
     <dimen name="detail_poster_height">161dp</dimen>
-    <dimen name="detail_poster_width">108dp</dimen>
+    <dimen name="detail_poster_width">108dp</dimen>-->
 
     <dimen name="rating_bar_width">162dp</dimen>
     <dimen name="rating_bar_height">18dp</dimen>
-    <dimen name="spacing">0dp</dimen>
     <dimen name="header_font_size">18sp</dimen>
 
     <dimen name="line_thickness">2dp</dimen>
+
+    <!-- Favorite button parameters -->
+    <dimen name="favorite_width">23dp</dimen>
+    <dimen name="favorite_height">32dp</dimen>
+    <dimen name="margin_thirty_two">32dp</dimen>
 
 </resources>

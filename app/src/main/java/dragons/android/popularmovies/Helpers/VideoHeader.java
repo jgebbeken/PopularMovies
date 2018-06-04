@@ -1,4 +1,5 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.Helpers;
+
 
 import android.content.Context;
 
@@ -10,16 +11,12 @@ import dragons.android.popularmovies.R;
 
 public class VideoHeader {
 
-    Context context;
-    String videoHeader;
+    private final String videoHeader;
 
-    public VideoHeader(){
-
-    }
 
     public VideoHeader(Context context) {
-        this.context = context;
-        videoHeader = "Video and Clips";
+
+        videoHeader = context.getResources().getString(R.string.video_header);
     }
 
     public String getVideoHeader() {

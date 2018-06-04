@@ -1,4 +1,5 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.Helpers;
+
 
 import android.content.Context;
 
@@ -10,15 +11,12 @@ import dragons.android.popularmovies.R;
 
 public class ReviewHeader {
 
-    String reviewHeader;
-    Context context;
+    private final String reviewHeader;
 
-    public ReviewHeader() {
-    }
 
     public ReviewHeader(Context context) {
-        this.context = context;
-        reviewHeader = "Reviews";
+
+        reviewHeader = context.getResources().getString(R.string.review_header);
     }
 
     public String getReviewHeader() {

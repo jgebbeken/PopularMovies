@@ -18,7 +18,7 @@ import dragons.android.popularmovies.BuildConfig;
  * response method.
  */
 
-public class NetworkUtilities{
+class NetworkUtilities{
 
 
     // THE API
@@ -30,6 +30,7 @@ public class NetworkUtilities{
     private static final String REGION_PARAM = "region";
     private static final String APPEND_PARAM = "append_to_response";
     private static final String APPEND ="videos,reviews";
+    private static final String PAGE_PARAM = "page";
 
     private static String urlSelected;
 
@@ -70,6 +71,22 @@ public class NetworkUtilities{
             e.printStackTrace();
             return null;
         }
+
+        return url;
+    }
+
+    public static URL buildUrl (String endpoint,String page){
+        urlSelected = BASE_URL;
+        Uri uri;
+        uri = buildUri(endpoint,urlSelected,page);
+        URL url;
+        try {
+            url = new URL(uri.toString());
+        }catch (MalformedURLException e){
+            e.printStackTrace();
+            return null;
+        }
+
 
         return url;
     }
@@ -128,6 +145,15 @@ public class NetworkUtilities{
                 .appendQueryParameter(REGION_PARAM, REGION)
                 .appendQueryParameter(API_PARAM,API_KEY)
                 .appendQueryParameter(APPEND_PARAM,APPEND)
+                .build();
+    }
+
+    private static Uri buildUri (String endpoint, String mBaseUrl, String page){
+        return Uri.parse(mBaseUrl).buildUpon()
+                .appendPath(endpoint)
+                .appendQueryParameter(REGION_PARAM,REGION)
+                .appendQueryParameter(API_PARAM,API_KEY)
+                .appendQueryParameter(PAGE_PARAM, page)
                 .build();
     }
 }

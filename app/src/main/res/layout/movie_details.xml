@@ -17,6 +17,7 @@
         android:id="@+id/ivBackground"
         android:layout_width="@dimen/zero_width"
         android:layout_height="@dimen/zero_height"
+        android:contentDescription="@string/backdrop"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -29,6 +30,7 @@
         android:layout_height="@dimen/poster_heights"
         android:layout_marginBottom="@dimen/margin_eight"
         android:layout_marginStart="@dimen/margin_sixteen"
+        android:contentDescription="@string/content_description_small_poster"
         android:scaleType="fitStart"
         app:layout_constraintBottom_toBottomOf="@+id/ivBackground"
         app:layout_constraintDimensionRatio="2:3"
@@ -117,7 +119,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="40dp"
         android:layout_marginTop="8dp"
-        android:text="Add to favorites"
+        android:text="@string/add_favorite_title"
         app:layout_constraintBottom_toBottomOf="@+id/tvVoteCount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvVoteCount"
@@ -125,11 +127,12 @@
         tools:text="Add to Favorites" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="23dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
+        android:id="@+id/ivFavorite"
+        android:layout_width="@dimen/favorite_width"
+        android:layout_height="@dimen/favorite_height"
+        android:contentDescription="@string/content_description_favorite_icon"
+        android:layout_marginStart="@dimen/margin_thirty_two"
+        android:layout_marginTop="@dimen/margin_eight"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:srcCompat="@android:drawable/btn_star_big_off" />

@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import dragons.android.popularmovies.Models.Movie;
+
 
 /**
  * HttpAsyncDataTask is designed to handle all HTTP related request, as well as provide
@@ -17,7 +19,7 @@ import java.util.List;
 
 public class HttpAsyncDataTask extends AsyncTask<String, Void, List<?>> {
 
-    private OnTaskCompleted listener;
+    private final OnTaskCompleted listener;
 
     private String json;
     private int movieId;
@@ -35,8 +37,11 @@ public class HttpAsyncDataTask extends AsyncTask<String, Void, List<?>> {
         @Override
         protected List<?> doInBackground(String... strings) {
 
-
+            String page = "";
             String endpoint = strings[0];
+            if(strings.length > 1){
+                page = strings[1];
+            }
 
             URL url;
             switch (endpoint){
@@ -44,7 +49,12 @@ public class HttpAsyncDataTask extends AsyncTask<String, Void, List<?>> {
                     url = NetworkUtilities.buildUrl(movieId);
                     break;
                 default:
-                    url = NetworkUtilities.buildUrl(strings[0]);
+                    if(page.equalsIgnoreCase("")) {
+                        url = NetworkUtilities.buildUrl(strings[0]);
+                    }
+                    else {
+                        url = NetworkUtilities.buildUrl(endpoint,page);
+                    }
             }
 
 

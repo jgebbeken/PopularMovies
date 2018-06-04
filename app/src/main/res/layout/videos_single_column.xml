@@ -20,7 +20,7 @@
             android:layout_height="72dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:contentDescription="@string/content_description_small_poster"
+            android:contentDescription="@string/content_description_thumbnail"
             app:layout_constraintDimensionRatio="w,16:9"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

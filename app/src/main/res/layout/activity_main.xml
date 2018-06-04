@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="dragons.android.popularmovies.MainActivity">
-    <!-- recyclerview -->
+    <!-- recyclerView -->
     <dragons.android.popularmovies.Utilities.AnimateRecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

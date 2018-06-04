@@ -1,4 +1,4 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.Adapters.ViewHolders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -7,12 +7,12 @@ import android.widget.TextView;
 import dragons.android.popularmovies.R;
 
 /**
- * Created by jgebbeken on 5/20/2018.
+ *  Header VieHolder use to separate data in the recycler
  */
 
 public class VideoHeaderViewHolder extends RecyclerView.ViewHolder {
 
-    TextView tvVideoHeader;
+    private final TextView tvVideoHeader;
 
 
     public VideoHeaderViewHolder(View itemView) {
