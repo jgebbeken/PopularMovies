@@ -1,4 +1,4 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.utilities;
 
 
 
@@ -11,9 +11,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import dragons.android.popularmovies.Models.Movie;
-import dragons.android.popularmovies.Models.Review;
-import dragons.android.popularmovies.Models.Video;
+import dragons.android.popularmovies.models.Movie;
+import dragons.android.popularmovies.models.Review;
+import dragons.android.popularmovies.models.Video;
 
 /**
  *
@@ -74,6 +74,7 @@ class JSONUtilities {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
 
 
@@ -85,6 +86,7 @@ class JSONUtilities {
 
         List<Video> videos = new ArrayList<>();
         List<Review> reviews = new ArrayList<>();
+
 
         try {
             JSONObject jsonVideos = new JSONObject(json).getJSONObject(VIDEO_OBJECT);

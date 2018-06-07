@@ -1,4 +1,4 @@
-package dragons.android.popularmovies.Models;
+package dragons.android.popularmovies.models;
 
 /**
  * Trailer and clips model

@@ -1,4 +1,4 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.utilities;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

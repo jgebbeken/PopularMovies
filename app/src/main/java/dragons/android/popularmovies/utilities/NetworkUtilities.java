@@ -1,4 +1,4 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.utilities;
 
 import android.net.Uri;
 import android.util.Log;
@@ -93,7 +93,6 @@ class NetworkUtilities{
 
 
     public static String response (URL url) throws IOException {
-
 
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

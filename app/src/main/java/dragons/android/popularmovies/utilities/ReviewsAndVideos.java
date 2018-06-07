@@ -1,9 +1,9 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.utilities;
 
 import java.util.List;
 
-import dragons.android.popularmovies.Models.Review;
-import dragons.android.popularmovies.Models.Video;
+import dragons.android.popularmovies.models.Review;
+import dragons.android.popularmovies.models.Video;
 
 /** This class is designed to accept both the video and review List objects and create a centralize
  *  location to access from.

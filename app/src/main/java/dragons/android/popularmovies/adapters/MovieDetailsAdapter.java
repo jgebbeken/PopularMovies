@@ -1,6 +1,7 @@
-package dragons.android.popularmovies.Adapters;
+package dragons.android.popularmovies.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,18 +11,20 @@ import android.view.ViewGroup;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
-import dragons.android.popularmovies.Helpers.FavoriteHelper;
-import dragons.android.popularmovies.Helpers.ReviewHeader;
-import dragons.android.popularmovies.Helpers.VideoHeader;
-import dragons.android.popularmovies.Models.Movie;
-import dragons.android.popularmovies.Models.Review;
-import dragons.android.popularmovies.Models.Video;
+
+import dragons.android.popularmovies.data.AppDatabase;
+import dragons.android.popularmovies.helpers.ReviewHeader;
+import dragons.android.popularmovies.helpers.VideoHeader;
+import dragons.android.popularmovies.models.Movie;
+import dragons.android.popularmovies.models.Review;
+import dragons.android.popularmovies.models.Video;
 import dragons.android.popularmovies.R;
-import dragons.android.popularmovies.Adapters.ViewHolders.MovieDetailViewHolder;
-import dragons.android.popularmovies.Adapters.ViewHolders.ReviewHeaderViewHolder;
-import dragons.android.popularmovies.Adapters.ViewHolders.ReviewViewHolder;
-import dragons.android.popularmovies.Adapters.ViewHolders.TrailerClipsViewHolder;
-import dragons.android.popularmovies.Adapters.ViewHolders.VideoHeaderViewHolder;
+import dragons.android.popularmovies.adapters.ViewHolders.MovieDetailViewHolder;
+import dragons.android.popularmovies.adapters.ViewHolders.ReviewHeaderViewHolder;
+import dragons.android.popularmovies.adapters.ViewHolders.ReviewViewHolder;
+import dragons.android.popularmovies.adapters.ViewHolders.TrailerClipsViewHolder;
+import dragons.android.popularmovies.adapters.ViewHolders.VideoHeaderViewHolder;
+import dragons.android.popularmovies.utilities.AppExecutors;
 
 /**
  * This is the multi view Movie Detail Adapter. Displays 3 different views (Movie Details,
@@ -46,6 +49,8 @@ public class MovieDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final int VIDEO_HEADER = 4;
     private static final String SITE_FROM = "YouTube";
     private static final String NUM_VOTES = " votes";
+    private final AppDatabase mDb;
+    private static boolean exist;
 
 
     public interface OnVideoClickHandler {
@@ -70,6 +75,7 @@ public class MovieDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         this.items = items;
         this.context = context;
+        mDb = AppDatabase.getsInstance(context.getApplicationContext());
     }
 
     public void updateAdapter(List<Object> incoming, Context context) {
@@ -168,9 +174,9 @@ public class MovieDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     @SuppressLint("SetTextI18n")
-    private void configMovieViewHolder(MovieDetailViewHolder holder, int position) {
+    private void configMovieViewHolder(final MovieDetailViewHolder holder, int position) {
 
-        Movie movie = (Movie) items.get(position);
+        final Movie movie = (Movie) items.get(position);
         // Load images
         Picasso.get().load(movie.getSmallPosterUrl()).into(holder.getIvPoster());
         Picasso.get().load(movie.getBackDropUrl()).into(holder.getIvBackground());
@@ -181,14 +187,26 @@ public class MovieDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         holder.getTvTitle().setText(movie.getTitle());
         holder.getTvVoteCount().setText(String.valueOf(movie.getVoteCount()) + NUM_VOTES);
 
-        String movieId = String.valueOf(movie.getId());
+        final int movieId = movie.getId();
 
-        if(FavoriteHelper.recordExists(movieId,context.getApplicationContext())){
-            Picasso.get().load(R.drawable.btn_star_big_on).into(holder.getIvFavorite());
-        }
-        else {
-            Picasso.get().load(R.drawable.btn_star_big_off).into(holder.getIvFavorite());
-        }
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                exist = mDb.movieDAO().doesExist(movieId);
+
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(exist){
+                            Picasso.get().load(R.drawable.btn_star_big_on).into(holder.getIvFavorite());
+                        }
+                        else {
+                            Picasso.get().load(R.drawable.btn_star_big_off).into(holder.getIvFavorite());
+                        }
+                    }
+                });
+            }
+        });
 
 
     }

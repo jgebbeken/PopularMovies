@@ -1,5 +1,9 @@
-package dragons.android.popularmovies.Models;
+package dragons.android.popularmovies.models;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,8 +12,11 @@ import android.os.Parcelable;
  * quickly transfer Movie objects to Activities with ease with only one Intent.putExtra.
  */
 
+@Entity(tableName = "movieFavorites")
 public class Movie implements Parcelable {
 
+    @PrimaryKey(autoGenerate = true)
+    private int primaryId;
     private String posterUrl;
     private String smallPosterUrl;
     private String backDropUrl;
@@ -18,6 +25,8 @@ public class Movie implements Parcelable {
     private String title;
     private int voteCount;
     private double voteAverage;
+
+    @ColumnInfo(name = "movieId")
     private int id;
 
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
@@ -26,11 +35,27 @@ public class Movie implements Parcelable {
 
 
 
+    @Ignore
     public Movie(){
 
     }
 
-    @SuppressWarnings("unused")
+    // Used by Room the URLs in the posters and backdrop don't need combine starting points. They are already included
+    public Movie(int primaryId, String posterUrl, String smallPosterUrl, String backDropUrl, String overview, String releaseDate, String title, int voteCount, double voteAverage, int id){
+
+        this.primaryId = primaryId;
+        this.posterUrl = posterUrl;
+        this.backDropUrl = backDropUrl;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+        this.title = title;
+        this.voteCount = voteCount;
+        this.voteAverage = voteAverage;
+        this.id = id;
+        this.smallPosterUrl = smallPosterUrl;
+    }
+
+    @Ignore
     public Movie(String posterUrl, String backDropUrl, String overview, String releaseDate, String title, int voteCount, double voteAverage, int id){
 
         this.posterUrl = IMAGE_BASE_URL + posterUrl;
@@ -44,6 +69,11 @@ public class Movie implements Parcelable {
     }
 
 
+    public int getPrimaryId() {
+        return primaryId;
+    }
+
+    // MovieID from TMDB
     public int getId() {
         return id;
     }
@@ -54,6 +84,11 @@ public class Movie implements Parcelable {
 
     public String getPosterUrl() {
         return posterUrl;
+    }
+
+
+    public void setPrimaryId(int primaryId) {
+        this.primaryId = primaryId;
     }
 
     public void setPosterUrl(String posterUrl) {
@@ -72,6 +107,10 @@ public class Movie implements Parcelable {
     public void setBackDropUrl(String backDropUrl) {
         this.backDropUrl = IMAGE_FULL_SIZE_URL + backDropUrl;
     }
+
+
+
+
 
     public void setBackDropFromCursor(String backDropUrl){
         this.backDropUrl = backDropUrl;

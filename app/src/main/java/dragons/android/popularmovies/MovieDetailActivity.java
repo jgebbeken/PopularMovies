@@ -7,20 +7,20 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ImageView;
-import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
-import dragons.android.popularmovies.Contracts.MovieFavoritesContract;
-import dragons.android.popularmovies.Helpers.FavoriteHelper;
-import dragons.android.popularmovies.Utilities.HttpAsyncDataTask;
-import dragons.android.popularmovies.Models.Movie;
-import dragons.android.popularmovies.Adapters.MovieDetailsAdapter;
-import dragons.android.popularmovies.Helpers.ReviewHeader;
-import dragons.android.popularmovies.Helpers.VideoHeader;
-import dragons.android.popularmovies.Models.Review;
-import dragons.android.popularmovies.Utilities.ReviewsAndVideos;
-import dragons.android.popularmovies.Models.Video;
+
+import dragons.android.popularmovies.data.AppDatabase;
+import dragons.android.popularmovies.utilities.AppExecutors;
+import dragons.android.popularmovies.utilities.HttpAsyncDataTask;
+import dragons.android.popularmovies.models.Movie;
+import dragons.android.popularmovies.adapters.MovieDetailsAdapter;
+import dragons.android.popularmovies.helpers.ReviewHeader;
+import dragons.android.popularmovies.helpers.VideoHeader;
+import dragons.android.popularmovies.models.Review;
+import dragons.android.popularmovies.utilities.ReviewsAndVideos;
+import dragons.android.popularmovies.models.Video;
 
 
 public class MovieDetailActivity extends AppCompatActivity implements HttpAsyncDataTask.OnTaskCompleted, MovieDetailsAdapter.OnVideoClickHandler,
@@ -39,14 +39,19 @@ public class MovieDetailActivity extends AppCompatActivity implements HttpAsyncD
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
 
+    private static boolean doesExist;
 
-
+    //Database variable
+    private AppDatabase mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_detail_vertical);
         this.savedInstanceState = savedInstanceState;
+
+        mDb = AppDatabase.getsInstance(getApplicationContext());
+
 
         Intent intent = getIntent();
         this.detailMovie = intent.getParcelableExtra("movieSelected");
@@ -94,7 +99,7 @@ public class MovieDetailActivity extends AppCompatActivity implements HttpAsyncD
         List<Video> videos = new ArrayList<>();
         List<Review> reviews = new ArrayList<>();
         videos.addAll(rv.get(0).getVideos());
-       reviews.addAll(rv.get(0).getReviews());
+        reviews.addAll(rv.get(0).getReviews());
 
         items.add(detailMovie);
         items.add(videoHeader);
@@ -120,24 +125,24 @@ public class MovieDetailActivity extends AppCompatActivity implements HttpAsyncD
     @Override
     public void onFavoritesClick(int position) {
         Log.d("Button Test", "It works!");
-        Movie movie = (Movie) items.get(position);
+       final Movie movie = (Movie) items.get(position);
         Log.d("Added object:", "movie");
-       String movieId = String.valueOf(movie.getId());
-
-       if(FavoriteHelper.recordExists(movieId,this)){
-           getContentResolver().delete(MovieFavoritesContract.MovieFavoritesEntry.CONTENT_URI.buildUpon().appendPath(movieId)
-                   .build(),
-                   MovieFavoritesContract.MovieFavoritesEntry.MOVIE_ID, new String[]{String.valueOf(movie.getId())});
-           Picasso.get().load(R.drawable.btn_star_big_off).into((ImageView) findViewById(R.id.ivFavorite));
-       }
-       else{
-           //dbHelper.addFavoriteMovie(movie);
-           FavoriteHelper.addFavorites(movie,this);
-           Picasso.get().load(R.drawable.btn_star_big_on).into((ImageView) findViewById(R.id.ivFavorite));
-       }
 
 
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
 
+                if(mDb.movieDAO().doesExist(movie.getId())) {
+                    mDb.movieDAO().deleteMovie(movie.getId());
+                }
+                else {
+                    mDb.movieDAO().insertMovie(movie);
+                }
+            }
+        });
+
+        adapter.notifyItemChanged(position);
     }
 
 

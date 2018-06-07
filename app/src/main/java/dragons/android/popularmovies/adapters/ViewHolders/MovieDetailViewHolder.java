@@ -1,4 +1,4 @@
-package dragons.android.popularmovies.Adapters.ViewHolders;
+package dragons.android.popularmovies.adapters.ViewHolders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 
-import dragons.android.popularmovies.Adapters.MovieDetailsAdapter;
+import dragons.android.popularmovies.adapters.MovieDetailsAdapter;
 import dragons.android.popularmovies.R;
 
 /**

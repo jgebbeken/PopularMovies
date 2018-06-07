@@ -1,4 +1,4 @@
-package dragons.android.popularmovies.Helpers;
+package dragons.android.popularmovies.helpers;
 
 
 import android.content.Context;

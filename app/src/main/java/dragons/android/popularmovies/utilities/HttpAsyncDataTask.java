@@ -1,4 +1,4 @@
-package dragons.android.popularmovies.Utilities;
+package dragons.android.popularmovies.utilities;
 
 
 import android.os.AsyncTask;
@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import dragons.android.popularmovies.Models.Movie;
+import dragons.android.popularmovies.models.Movie;
 
 
 /**
@@ -69,14 +69,20 @@ public class HttpAsyncDataTask extends AsyncTask<String, Void, List<?>> {
             switch (endpoint) {
                 case "videosReviews":
                     List<ReviewsAndVideos> rv = new ArrayList<>();
-                     rv.add(JSONUtilities.videoAndReviewParsing(json));
-                     Log.d("RV Array", String.valueOf(rv.size()));
+                    rv.add(JSONUtilities.videoAndReviewParsing(json));
+                    Log.d("RV Array", String.valueOf(rv.size()));
                     return rv;
                 default:
                     List<Movie> movies = new ArrayList<>();
                     movies.addAll(JSONUtilities.movieParsing(json));
                     Log.d("Movies", String.valueOf(movies.size()));
-                    return movies;
+
+                    if (movies !=null) {
+                        return movies;
+                    } else {
+                        movies = new ArrayList<>();
+                        return movies;
+                    }
             }
         }
 

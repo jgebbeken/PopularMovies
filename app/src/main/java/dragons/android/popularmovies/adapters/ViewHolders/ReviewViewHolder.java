@@ -1,4 +1,4 @@
-package dragons.android.popularmovies.Adapters.ViewHolders;
+package dragons.android.popularmovies.adapters.ViewHolders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

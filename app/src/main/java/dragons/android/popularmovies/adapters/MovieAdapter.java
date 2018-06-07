@@ -1,5 +1,6 @@
-package dragons.android.popularmovies.Adapters;
+package dragons.android.popularmovies.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +14,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import dragons.android.popularmovies.Helpers.FavoriteHelper;
-import dragons.android.popularmovies.Models.Movie;
+import dragons.android.popularmovies.data.AppDatabase;
+import dragons.android.popularmovies.models.Movie;
 import dragons.android.popularmovies.R;
+import dragons.android.popularmovies.utilities.AppExecutors;
 
 /**
  * Purpose of this Adapter is to bind the movie objects to the view holders. This adapter is used
@@ -28,6 +30,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private Context context;
     private OnMovieClickHandler mMovieHandler;
     private OnMovieClickHandler mFavoriteHandler;
+    //Database variable
+    private final AppDatabase mDb;
+    private static boolean exist;
+
 
 
     public interface OnMovieClickHandler {
@@ -50,6 +56,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
             this.movies = movies;
             this.context = context;
+            mDb = AppDatabase.getsInstance(context.getApplicationContext());
     }
 
     // This is to attempt to refresh the List of movie objects with new JSON data
@@ -73,14 +80,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         public MovieViewHolder(View itemView) {
             super(itemView);
 
+
+
             posterImage = itemView.findViewById(R.id.large_poster);
             ivFavorite = itemView.findViewById(R.id.favoriteStar);
+
             ivFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    int position = getAdapterPosition();
                     if(mFavoriteHandler != null){
-                        int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION) {
+
                             mMovieHandler.onMainFavoriteClick(position);
                         }
                     }
@@ -110,28 +121,36 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MovieViewHolder holder, final int position) {
 
-        Movie movie = movies.get(position);
+        final Movie movie = movies.get(position);
 
-        String movieId = String.valueOf(movie.getId());
 
         Picasso.get()
                 .load(movie.getPosterUrl()).placeholder(R.drawable.tmdb_logo).error(R.drawable.no_image)
                 .into(holder.posterImage);
 
 
-        Picasso.get()
-                .load(R.drawable.btn_star_big_off).placeholder(R.drawable.tmdb_logo).error(R.drawable.no_image)
-                .into(holder.ivFavorite);
-        if(FavoriteHelper.recordExists(movieId,context.getApplicationContext())){
-            Picasso.get().load(R.drawable.btn_star_big_on).into(holder.ivFavorite);
-        }
-        else {
-            Picasso.get().load(R.drawable.btn_star_big_off).into(holder.ivFavorite);
-        }
 
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                exist = mDb.movieDAO().doesExist(movie.getId());
 
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(exist) {
+                            Picasso.get().load(R.drawable.btn_star_big_on).into(holder.ivFavorite);
+                        }else{
+                            Picasso.get().load(R.drawable.btn_star_big_off).into(holder.ivFavorite);
+
+                        }
+
+                    }
+                });
+            }
+        });
     }
 
     @Override

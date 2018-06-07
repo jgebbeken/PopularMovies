@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,11 +25,7 @@
         <activity android:name=".MovieDetailActivity"
             android:parentActivityName=".MainActivity"
             android:launchMode="singleTop"/>
-        
-        <provider
-            android:authorities="dragons.android.popularmovies"
-            android:name=".ContentProviders.FavoritesContentProvider"
-            android:exported="false" />
+
     </application>
 
 </manifest>
