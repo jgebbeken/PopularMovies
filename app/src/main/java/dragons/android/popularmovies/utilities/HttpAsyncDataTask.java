@@ -37,6 +37,7 @@ public class HttpAsyncDataTask extends AsyncTask<String, Void, List<?>> {
         @Override
         protected List<?> doInBackground(String... strings) {
 
+            // Page String is not used but was for endless scrolling in mind
             String page = "";
             String endpoint = strings[0];
             if(strings.length > 1){
@@ -77,7 +78,7 @@ public class HttpAsyncDataTask extends AsyncTask<String, Void, List<?>> {
                     movies.addAll(JSONUtilities.movieParsing(json));
                     Log.d("Movies", String.valueOf(movies.size()));
 
-                    if (movies !=null) {
+                    if (movies.size() > 0) {
                         return movies;
                     } else {
                         movies = new ArrayList<>();
